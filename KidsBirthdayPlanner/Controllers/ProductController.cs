@@ -8,5 +8,10 @@ namespace KidsBirthdayPlanner.Controllers
         {
             return View();
         }
+        public IActionResult Details(int id)
+        {
+            return Content($"Product details: {id}");
+        }
+
     }
 }
