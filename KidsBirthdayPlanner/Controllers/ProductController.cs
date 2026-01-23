@@ -6,11 +6,17 @@ namespace KidsBirthdayPlanner.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Title = "All Products";
             return View();
         }
         public IActionResult Details(int id)
         {
-            return Content($"Product details: {id}");
+            if(id <= 0)
+            {
+                return Content("Invalid product id.");
+            }
+            ViewBag.ProductId = id;
+            return View();
         }
 
     }
