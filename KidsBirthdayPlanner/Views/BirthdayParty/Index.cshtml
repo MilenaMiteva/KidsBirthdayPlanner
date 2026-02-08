@@ -1,0 +1,19 @@
+﻿
+@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "All Products";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@foreach (var product in Model)
+{
+    <a asp-controller="Product"
+       asp-action="Details"
+       asp-route-id="@product.Id">
+        View @product.Name
+    </a>
+
+    <br />
+}

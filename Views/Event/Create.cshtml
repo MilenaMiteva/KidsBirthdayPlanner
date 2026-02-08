@@ -1,0 +1,54 @@
+﻿@model KidsBirthdayPlanner.Models.Event
+
+<h2>Create Event</h2>
+
+<form asp-action="Create">
+
+    <div>
+        <label>Title</label>
+        <input asp-for="Title" />
+    </div>
+
+    <div>
+        <label>Description</label>
+        <input asp-for="Description" />
+    </div>
+
+    <div>
+        <label>Date</label>
+        <input asp-for="Date" type="date" />
+    </div>
+
+    <div>
+        <label>Start Time</label>
+        <input asp-for="StartTime" type="time" />
+    </div>
+
+    <div>
+        <label>Duration</label>
+        <input asp-for="DurationHours" />
+    </div>
+
+    <div>
+        <label>Max Guests</label>
+        <input asp-for="MaxGuests" />
+    </div>
+
+    <div>
+        <label>PackagePartyId</label>
+        <select asp-for="PackagePartyId">
+
+            <option value="">Select package</option>
+
+            @foreach (var package in ViewBag.Packages)
+            {
+                <option value="@package.Id">@package.Name</option>
+            }
+
+        </select>
+
+    </div>
+
+    <button type="submit">Create</button>
+
+</form>

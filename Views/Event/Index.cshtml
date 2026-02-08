@@ -1,0 +1,11 @@
+﻿@model IEnumerable<KidsBirthdayPlanner.Models.Event>
+
+<h1>Events</h1>
+
+@foreach (var ev in Model)
+{
+    <div>
+        <h3>@ev.Title</h3>
+        <p>@ev.Description</p>
+    </div>
+}
