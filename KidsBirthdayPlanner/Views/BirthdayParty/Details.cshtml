@@ -1,12 +1,17 @@
-﻿@model ProductViewModel
+﻿@using KidsBirthdayPlanner.ViewModels
+@model BirthdayPartyViewModel
 
 @{
-    ViewData["Title"] = "Product Details";
+    ViewData["Title"] = "BirthdayParty Details";
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <p><strong>Id:</strong> @Model.Id</p>
-<p><strong>Name:</strong> @Model.Name</p>
+<<p><strong>Theme:</strong> @Model.ThemeId</p>
 
-<a asp-controller="Product" asp-action="Index">Back to all</a>
+
+<a asp-controller="BirthdayParty" asp-action="Index">Back to all</a>
+
+
+

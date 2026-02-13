@@ -1,0 +1,23 @@
+﻿@model KidsBirthdayPlanner.ViewModels.BirthdayPartyViewModel
+
+<h2>Delete Birthday Party</h2>
+
+<h4>Are you sure you want to delete @Model.ThemeId ?</h4>
+
+<form asp-action="DeleteConfirmed" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">
+        Delete
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>
+<a asp-action="Index" class="btn btn-secondary mt-3">
+    ← Back
+</a>
+

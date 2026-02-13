@@ -20,3 +20,195 @@ html {
 body {
   margin-bottom: 60px;
 }
+.neon-bg {
+    
+    background: radial-gradient(circle at top, #7a00ff, #2b0050 60%, #120022);
+    color: #ffffff;
+    min-height: 100vh;
+}
+.navbar {
+    background-color: #0a0015 !important;
+}
+
+.navbar a {
+     color: #ff00cc !important;
+}
+
+.navbar a:hover {
+     color: #00ffff !important;
+}
+.card {
+    background-color: #111 !important;
+    color: #ffffff !important;
+    border: 1px solid #ff00cc;
+    box-shadow: 0 0 15px #ff00cc66;
+}
+
+.balloon {
+    position: fixed;
+    bottom: -120px;
+    width: 60px;
+    height: 80px;
+    background: #ff00cc;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #ff00cc, 0 0 40px #ff00cc;
+    animation: floatUp linear infinite;
+    opacity: 0.8;
+}
+
+.balloon::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        width: 2px;
+        height: 25px;
+        background: white;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-120vh);
+    }
+}
+
+.ultra-balloon {
+    position: fixed;
+    bottom: -120px;
+    width: 50px;
+    height: 70px;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: floatUp linear infinite;
+    pointer-events: none;
+}
+
+.ultra-balloon::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        width: 2px;
+        height: 25px;
+        background: white;
+    }
+
+.pink {
+    background: #ff00cc;
+    box-shadow: 0 0 15px #ff00cc,0 0 35px #ff00cc;
+}
+
+.cyan {
+    background: #00ffff;
+    box-shadow: 0 0 15px #00ffff,0 0 35px #00ffff;
+}
+
+.purple {
+    background: #a100ff;
+    box-shadow: 0 0 15px #a100ff,0 0 35px #a100ff;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-120vh);
+    }
+}
+.ultra-balloon {
+    position: fixed;
+    bottom: -150px;
+    border-radius: 50% 50% 45% 45%;
+    opacity: 0.8;
+    animation: floatUp linear forwards;
+    z-index: 0; 
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+}
+.party-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 0 10px #ff00aa33;
+}
+
+.party-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px #ff00aa, 0 0 20px #ff00aa, 0 0 40px #ff00aa;
+}
+.btn-primary {
+    background: #ff00aa;
+    border: none;
+    box-shadow: 0 0 10px #ff00aa;
+}
+
+.btn-primary:hover {
+     background: #ff33cc;
+     box-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc;
+}
+.neon-card {
+    background: linear-gradient(135deg, #ff00aa, #9900ff);
+    border: 1px solid hotpink;
+    color: white;
+    box-shadow: 0 0 15px rgba(255,0,200,0.5);
+}
+
+
+.form-label,
+label {
+    color: white !important;
+}
+
+.form-control {
+    background: rgba(0,0,0,0.6) !important;
+    color: white !important;
+    border: 1px solid hotpink !important;
+}
+
+.form-control::placeholder {
+     color: #cccccc;
+
+}
+.neon-select {
+    background-color: #2b0040;
+    color: white;
+    border: 1px solid hotpink;
+}
+
+.neon-select option {
+     background-color: #2b0040;
+     color: white;
+}
+.neon-select:focus {
+     box-shadow: 0 0 10px hotpink;
+}
+.neon-select {
+    background-color: #2a003f !important;
+    color: white !important;
+    border: 1px solid #ff00aa;
+}
+
+.neon-select option {
+        background-color: #2a003f;
+        color: white;
+}
+
+
+
+
+
+
+
+
+

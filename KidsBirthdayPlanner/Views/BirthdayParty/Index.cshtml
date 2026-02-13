@@ -1,19 +1,49 @@
-﻿
-@model IEnumerable<ProductViewModel>
+﻿@using KidsBirthdayPlanner.ViewModels
+@model IEnumerable<BirthdayPartyViewModel>
 
-@{
-    ViewData["Title"] = "All Products";
-}
-
-<h2>@ViewData["Title"]</h2>
-
-@foreach (var product in Model)
-{
-    <a asp-controller="Product"
-       asp-action="Details"
-       asp-route-id="@product.Id">
-        View @product.Name
+<h2 class="text-center mb-4">Birthday Parties</h2>
+<div class="text-center mb-4">
+    <a asp-action="Create" class="btn btn-success">
+        + Create Birthday Party
     </a>
+</div>
 
-    <br />
-}
+
+<div class="row">
+
+    @foreach (var party in Model)
+    {
+        <div class="col-md-4 mb-4">
+
+            <div class="card neon-card">
+
+                <div class="card-body text-center">
+
+                    <h4>@party.ThemeId</h4>
+
+                    <a asp-action="Details"
+                       asp-route-id="@party.Id"
+                       class="btn btn-primary mt-2">
+                        Details
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@party.Id"
+                       class="btn btn-warning mt-2">
+                        Edit
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@party.Id"
+                       class="btn btn-danger mt-2">
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
