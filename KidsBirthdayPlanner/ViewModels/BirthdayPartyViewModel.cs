@@ -11,20 +11,29 @@ public class BirthdayPartyViewModel
     [Required]
     public int ThemeId { get; set; }
 
+   
+    public string? ThemeName { get; set; }
+
     [Required]
     public int CakeId { get; set; }
+
+    public string? CakeName { get; set; }
+    public string? BalloonName { get; set; }
 
     [Required]
     public int Portions { get; set; }
 
-    public string CakeName { get; set; } = null!;
-
     [Required]
     public int BalloonId { get; set; } 
-    public string BalloonName { get; set; } = null!;
 
     [Range(BalloonQuantityMin, BalloonQuantityMax)]
     public int BalloonQuantity { get; set; }
+
+    public string? LocationName { get; set; }
+
+    public List<SelectListItem> LocationNames { get; set; } 
+        = new ();
+    public IEnumerable<SelectListItem>? Locations { get; set; }
 
 
     [Required]

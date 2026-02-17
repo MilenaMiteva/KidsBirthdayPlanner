@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using KidsBirthdayPlanner.Models;
+using KidsBirthdayPlanner.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KidsBirthdayPlanner.Controllers

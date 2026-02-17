@@ -1,6 +1,8 @@
+using KidsBirthdayPlanner.Data;
+using KidsBirthdayPlanner.Services;
+using KidsBirthdayPlanner.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using KidsBirthdayPlanner.Models;
 namespace KidsBirthdayPlanner
 {
     public class Program
@@ -14,11 +16,22 @@ namespace KidsBirthdayPlanner
 
             builder.Services.AddDbContext<KidsBirthdayPlannerContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<KidsBirthdayPlannerContext>();
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+             .AddEntityFrameworkStores<KidsBirthdayPlannerContext>();
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+            builder.Services.AddScoped<IBirthdayPartyService, BirthdayPartyService>();
+
 
 
             var app = builder.Build();
@@ -36,9 +49,8 @@ namespace KidsBirthdayPlanner
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseAuthentication();
-
-
             app.UseAuthorization();
 
             app.MapControllerRoute(

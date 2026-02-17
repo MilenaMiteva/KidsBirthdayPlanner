@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace KidsBirthdayPlanner.Models;
+namespace KidsBirthdayPlanner.Data;
 
 public class KidsBirthdayPlannerContext : IdentityDbContext<IdentityUser>
 {
@@ -11,12 +11,10 @@ public class KidsBirthdayPlannerContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
-    public DbSet<BirthdayParty> BirthdayParties { get; set; } = null!;
-    public DbSet<Cake> Cakes { get; set; }
-    public DbSet<Balloon> Balloons { get; set; }
-    public DbSet<Theme> Themes { get; set; } = null!;
-
-
+    public virtual DbSet<BirthdayParty> BirthdayParties { get; set; } = null!;
+    public virtual DbSet<Cake> Cakes { get; set; }
+    public virtual DbSet<Balloon> Balloons { get; set; }
+    public virtual DbSet<Theme> Themes { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

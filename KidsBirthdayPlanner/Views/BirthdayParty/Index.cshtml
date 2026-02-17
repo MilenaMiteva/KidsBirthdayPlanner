@@ -2,48 +2,69 @@
 @model IEnumerable<BirthdayPartyViewModel>
 
 <h2 class="text-center mb-4">Birthday Parties</h2>
-<div class="text-center mb-4">
-    <a asp-action="Create" class="btn btn-success">
-        + Create Birthday Party
-    </a>
-</div>
 
-
-<div class="row">
-
-    @foreach (var party in Model)
+ <div class="text-center mb-4">
+    @if (User.Identity?.IsAuthenticated == true)
     {
-        <div class="col-md-4 mb-4">
+        <a asp-action="Create" class="btn btn-success">
+            + Create Birthday Party
+        </a>
+    }
+ </div>
 
-            <div class="card neon-card">
+  @if (!Model.Any())
+ {
+    <div class="col-12">
+        <p class="text-center">
+            No birthday parties found. Create one to get started!
+        </p>
+    </div>
+ }
+ else
+ {
+    <div class="row">
 
-                <div class="card-body text-center">
+        @foreach (var party in Model)
+        {
+            <div class="col-md-4 mb-4">
 
-                    <h4>@party.ThemeId</h4>
+                <div class="card neon-card">
 
-                    <a asp-action="Details"
-                       asp-route-id="@party.Id"
-                       class="btn btn-primary mt-2">
-                        Details
-                    </a>
+                    <div class="card-body text-center">
 
-                    <a asp-action="Edit"
-                       asp-route-id="@party.Id"
-                       class="btn btn-warning mt-2">
-                        Edit
-                    </a>
+                        
+                        <h4>@party.ThemeName</h4>
 
-                    <a asp-action="Delete"
-                       asp-route-id="@party.Id"
-                       class="btn btn-danger mt-2">
-                        Delete
-                    </a>
+                        <p>@party.LocationName</p>
+
+                        
+                        <a asp-action="Details"
+                           asp-route-id="@party.Id"
+                           class="btn btn-primary mt-2">
+                            Details
+                        </a>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@party.Id"
+                               class="btn btn-warning mt-2">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@party.Id"
+                               class="btn btn-danger mt-2">
+                                Delete
+                            </a>
+                        }
+
+                    </div>
 
                 </div>
 
             </div>
+        }
 
-        </div>
-    }
-
-</div>
+    </div>
+}

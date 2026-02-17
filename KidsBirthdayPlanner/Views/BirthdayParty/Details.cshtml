@@ -8,7 +8,15 @@
 <h2>@ViewData["Title"]</h2>
 
 <p><strong>Id:</strong> @Model.Id</p>
-<<p><strong>Theme:</strong> @Model.ThemeId</p>
+<p><strong>Theme:</strong> @Model.ThemeName</p>
+ <p><strong>Cake:</strong> @Model.CakeName</p>
+<p><strong>Balloons:</strong> @Model.BalloonName</p>
+<p><strong>Guests:</strong> @Model.GuestsCount</p>
+<p>
+    <strong>Date:</strong> @Model.Date.ToString("dd.MM.yyyy HH:mm")
+</p>
+<p><strong>Location:</strong> @Model.LocationName</p>
+
 
 
 <a asp-controller="BirthdayParty" asp-action="Index">Back to all</a>

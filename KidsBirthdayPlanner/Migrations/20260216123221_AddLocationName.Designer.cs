@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KidsBirthdayPlanner.Migrations
 {
     [DbContext(typeof(KidsBirthdayPlannerContext))]
-    [Migration("20260212104830_UpdateBirthdayPartyModel")]
-    partial class UpdateBirthdayPartyModel
+    [Migration("20260216123221_AddLocationName")]
+    partial class AddLocationName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,9 +38,6 @@ namespace KidsBirthdayPlanner.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -49,6 +46,32 @@ namespace KidsBirthdayPlanner.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Balloons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Color = "Pink",
+                            Type = "Helium"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Color = "Gold",
+                            Type = "Foil"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Color = "Multicolor",
+                            Type = "LED"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Color = "Blue",
+                            Type = "Latex"
+                        });
                 });
 
             modelBuilder.Entity("KidsBirthdayPlanner.Data.BirthdayParty", b =>
@@ -62,6 +85,9 @@ namespace KidsBirthdayPlanner.Migrations
                     b.Property<int>("BalloonId")
                         .HasColumnType("int");
 
+                    b.Property<int>("BalloonQuantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("CakeId")
                         .HasColumnType("int");
 
@@ -71,19 +97,24 @@ namespace KidsBirthdayPlanner.Migrations
                     b.Property<int>("GuestsCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Theme")
+                    b.Property<string>("LocationName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("Time")
-                        .HasColumnType("time");
+                    b.Property<int>("Portions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThemeId")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BalloonId");
 
                     b.HasIndex("CakeId");
+
+                    b.HasIndex("ThemeId");
 
                     b.ToTable("BirthdayParties");
                 });
@@ -101,9 +132,6 @@ namespace KidsBirthdayPlanner.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Portions")
-                        .HasColumnType("int");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -112,6 +140,97 @@ namespace KidsBirthdayPlanner.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cakes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Flavor = "Chocolate",
+                            Type = "Chocolate Cake"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Flavor = "Vanilla",
+                            Type = "Unicorn Cake"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Flavor = "Strawberry",
+                            Type = "Spider-Man Cake"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Flavor = "Chocolate",
+                            Type = "Football Cake"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Flavor = "Fruit",
+                            Type = "Rainbow Cake"
+                        });
+                });
+
+            modelBuilder.Entity("KidsBirthdayPlanner.Data.Theme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Themes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Kpop Demon Hunters"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Paw Patrol"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Spider-Man"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Football Party"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Barbie Dream Party"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Frozen Princess"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Minecraft Adventure"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Sonic Speed Party"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -330,9 +449,17 @@ namespace KidsBirthdayPlanner.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("KidsBirthdayPlanner.Data.Theme", "Theme")
+                        .WithMany()
+                        .HasForeignKey("ThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Balloon");
 
                     b.Navigation("Cake");
+
+                    b.Navigation("Theme");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static KidsBirthdayPlanner.Common.EntityValidation;
 
-namespace KidsBirthdayPlanner.Models;
+namespace KidsBirthdayPlanner.Data;
 
 public class Balloon
 {

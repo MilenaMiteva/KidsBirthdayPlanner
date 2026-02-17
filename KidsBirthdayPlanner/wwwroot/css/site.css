@@ -204,6 +204,23 @@ label {
         color: white;
 }
 
+select.form-control {
+    background-color: #2b0040;
+    color: #ff00aa;
+    border: 1px solid #ff00aa;
+}
+
+select.form-control option {
+     background-color: #2b0040;
+     color: #ff00aa;
+}
+select.form-control:focus {
+      outline: none;
+      box-shadow: 0 0 10px #ff00aa;
+}
+
+
+
 
 
 

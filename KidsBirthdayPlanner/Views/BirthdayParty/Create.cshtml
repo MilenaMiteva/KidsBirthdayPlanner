@@ -3,6 +3,8 @@
 <h2>Create Birthday Party</h2>
 
 <form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
 
     <div class="form-group">
         <label>Theme</label>
@@ -15,6 +17,14 @@
 
         <span asp-validation-for="ThemeId"></span>
     </div>
+    <label>Location</label>
+    <select asp-for="LocationName"
+            asp-items="Model.Locations"
+            class="form-control">
+        <option value="">-- Select Location --</option>
+    </select>
+
+
 
 
     <div class="form-group">

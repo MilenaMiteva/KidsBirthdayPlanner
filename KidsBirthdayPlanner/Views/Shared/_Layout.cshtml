@@ -6,12 +6,13 @@
     <title>@ViewData["Title"] - KidsBirthdayPlanner</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="icon" href="~/faviicon.icon.png" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <body class="neon-bg">
 
-   
+    
     <div class="balloon" style="left:10%; animation-duration:12s;"></div>
     <div class="balloon" style="left:25%; animation-duration:15s;"></div>
     <div class="balloon" style="left:40%; animation-duration:18s;"></div>
@@ -23,7 +24,6 @@
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
 
-               
                 <a class="navbar-brand"
                    asp-controller="Home"
                    asp-action="Index">
@@ -32,6 +32,7 @@
 
                 <div class="collapse navbar-collapse">
 
+                    
                     <ul class="navbar-nav me-auto">
 
                         <li class="nav-item">
@@ -50,16 +51,20 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="BirthdayParty"
-                               asp-action="Index">
-                                Birthday Parties
-                            </a>
-                        </li>
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="BirthdayParty"
+                                   asp-action="Index">
+                                    Birthday Parties
+                                </a>
+                            </li>
+                        }
 
                     </ul>
 
+                    
                     <ul class="navbar-nav">
 
                         @if (User.Identity!.IsAuthenticated)
@@ -74,12 +79,10 @@
                                 <form asp-area="Identity"
                                       asp-page="/Account/Logout"
                                       method="post">
-
                                     <button type="submit"
                                             class="btn btn-link nav-link text-light">
                                         Logout
                                     </button>
-
                                 </form>
                             </li>
                         }

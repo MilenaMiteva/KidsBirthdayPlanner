@@ -1,216 +1,110 @@
-﻿using KidsBirthdayPlanner.Models;
+﻿using KidsBirthdayPlanner.Services.Interfaces;
 using KidsBirthdayPlanner.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace KidsBirthdayPlanner.Controllers
 {
+    [Authorize]
     public class BirthdayPartyController : Controller
     {
-        private readonly KidsBirthdayPlannerContext context;
+        private readonly IBirthdayPartyService service;
 
-        public BirthdayPartyController(KidsBirthdayPlannerContext context)
+        public BirthdayPartyController(IBirthdayPartyService service)
         {
-            this.context = context;
+            this.service = service;
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var parties = await context.BirthdayParties
-                .Include(p => p.Theme)
-                .Include(p => p.Balloon)
-                .Select(p => new BirthdayPartyViewModel
-                {
-                    Id = p.Id,
-                    ThemeId = p.ThemeId,
-                    CakeId = p.CakeId,
-                    BalloonId = p.BalloonId,
-                    Date = p.Date,
-                    GuestsCount = p.GuestsCount
-                })
-                .ToListAsync();
-
+            var parties = await service.GetAllAsync();
             return View(parties);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var party = await context.BirthdayParties
-                .Where(p => p.Id == id)
-                .Select(p => new BirthdayPartyViewModel
-                {
-                    Id = p.Id,
-                    ThemeId = p.ThemeId,
-                    CakeId = p.CakeId,
-                    BalloonId = p.BalloonId,
-                    Date = p.Date,
-                    GuestsCount = p.GuestsCount
-                })
-                .FirstOrDefaultAsync();
+            var model = await service.GetByIdAsync(id);
 
-            if (party == null)
-            {
-                return NotFound();
+            if (model == null)
+            { 
+                return NotFound(); 
             }
-
-            return View(party);
-        }
-
-        [HttpGet]
-        [Authorize]
-
-        public async Task<IActionResult> Create()
-        {
-            var model = new BirthdayPartyViewModel
-            {
-                 Cakes = await context.Cakes
-                .OrderBy(c => c.Type)
-                .ThenBy(c => c.Flavor)
-                .Select(c => new SelectListItem
-                {
-                 Value = c.Id.ToString(),
-                 Text = c.Type + " - " + c.Flavor
-                })
-                .ToListAsync(),
-
-
-                Balloons = await context.Balloons
-                    .OrderBy(b => b.Type)
-                    .ThenBy(b => b.Color)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.Id.ToString(),
-                        Text = b.Type + " - " + b.Color
-
-                    }).ToListAsync(),
-                    Themes = await context.Themes
-                    .OrderBy(t => t.Name)
-                    .Select(t => new SelectListItem
-                    {
-                        Value = t.Id.ToString(),
-                        Text = t.Name
-                    }).ToListAsync()
-            };
-
 
             return View(model);
         }
 
-
+        [HttpGet]
+        
+        public async Task<IActionResult> Create()
+        {
+            var model = await service.GetCreateModelAsync();
+            return View(model);
+        }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> Create(BirthdayPartyViewModel model)
         {
             if (!ModelState.IsValid)
-            {
-                return View(model);
+            { 
+                model = await service.GetCreateModelAsync();
+                return View(model); 
             }
 
-
-            var party = new BirthdayParty
-            {
-                ThemeId = model.ThemeId,
-                CakeId = model.CakeId,
-                BalloonId = model.BalloonId,
-                BalloonQuantity = model.BalloonQuantity,
-                Date = model.Date,
-                GuestsCount = model.GuestsCount
-            };
-
-            await context.BirthdayParties.AddAsync(party);
-            await context.SaveChangesAsync();
+            await service.CreateAsync(model);
 
             return RedirectToAction(nameof(Index));
         }
 
-
         [HttpGet]
+        
         public async Task<IActionResult> Edit(int id)
         {
-            var party = await context.BirthdayParties.FindAsync(id);
+            var model = await service.GetEditAsync(id);
 
-            if (party == null)
+            if (model == null)
+            { 
                 return NotFound();
-
-            var model = new BirthdayPartyViewModel
-            {
-                Id = party.Id,
-                ThemeId = party.ThemeId,
-                CakeId = party.CakeId,
-                BalloonId = party.BalloonId,
-                Date = party.Date,
-                GuestsCount = party.GuestsCount
-            };
+            }
 
             return View(model);
         }
+
         [HttpPost]
+        
         public async Task<IActionResult> Edit(BirthdayPartyViewModel model)
         {
             if (!ModelState.IsValid)
+            { 
                 return View(model);
+            }
 
-            var party = await context.BirthdayParties.FindAsync(model.Id);
-
-            if (party == null)
-                return NotFound();
-
-            party.ThemeId = model.ThemeId;
-            party.CakeId = model.CakeId;
-            party.BalloonId = model.BalloonId;
-            party.Date = model.Date;
-            party.GuestsCount = model.GuestsCount;
-
-            await context.SaveChangesAsync();
+            await service.EditAsync(model);
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
+        
         public async Task<IActionResult> Delete(int id)
         {
-            var party = await context.BirthdayParties.FindAsync(id);
+            var model = await service.GetDeleteAsync(id);
 
-            if (party == null)
-            {
-                return NotFound();
+            if (model == null)
+            { 
+                return NotFound(); 
             }
-
-            var model = new BirthdayPartyViewModel
-            {
-                Id = party.Id,
-                ThemeId = party.ThemeId,
-                CakeId = party.CakeId,
-                BalloonId = party.BalloonId,
-                Date = party.Date,
-                GuestsCount = party.GuestsCount
-
-            };
 
             return View(model);
         }
+
         [HttpPost]
+        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var party = await context.BirthdayParties.FindAsync(id);
-
-            if (party == null)
-            {
-                return NotFound();
-            }
-
-            context.BirthdayParties.Remove(party);
-
-            await context.SaveChangesAsync();
+            await service.DeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
         }
-
-
-
     }
 }

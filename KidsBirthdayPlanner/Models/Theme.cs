@@ -1,4 +1,4 @@
-﻿namespace KidsBirthdayPlanner.Models;
+﻿namespace KidsBirthdayPlanner.Data;
 
 public class Theme
 {
