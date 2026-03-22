@@ -54,4 +54,5 @@ public class BirthdayPartyViewModel
      public IEnumerable<SelectListItem> Themes { get; set; }
       = new List<SelectListItem>();
 
+    public string ImageUrl { get; set; } = string.Empty;
 }

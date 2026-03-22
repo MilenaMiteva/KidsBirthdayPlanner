@@ -40,5 +40,7 @@ public class BirthdayParty
 
     [Range(BalloonQuantityMin, BalloonQuantityMax)]
     public int BalloonQuantity { get; set; }
+
+    public string ImageUrl { get; set; } = string.Empty;
 }
 

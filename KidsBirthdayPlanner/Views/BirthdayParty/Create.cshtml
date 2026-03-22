@@ -23,6 +23,11 @@
             class="form-control">
         <option value="">-- Select Location --</option>
     </select>
+    <div class="form-group mb-3">
+        <label asp-for="ImageUrl" class="form-label"></label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="Paste image URL here" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
 
 
 
