@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using KidsBirthdayPlanner.Models;
 using static KidsBirthdayPlanner.Common.EntityValidation;
 
 
@@ -42,5 +43,8 @@ public class BirthdayParty
     public int BalloonQuantity { get; set; }
 
     public string ImageUrl { get; set; } = string.Empty;
+
+    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 }
 

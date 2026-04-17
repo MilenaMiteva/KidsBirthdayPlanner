@@ -14,25 +14,6 @@ namespace KidsBirthdayPlanner.Services
         {
             this.context = context;
         }
-
-        public async Task<IEnumerable<BirthdayPartyViewModel>> GetAllAsync()
-        {
-            return await context.BirthdayParties
-                .Select(p => new BirthdayPartyViewModel
-                {
-                    Id = p.Id,
-                    ThemeName = p.Theme.Name,
-                    CakeName = p.Cake.Type + " - " + p.Cake.Flavor,
-                    BalloonName = p.Balloon.Type + " - " + p.Balloon.Color,
-                    Date = p.Date,
-                    GuestsCount = p.GuestsCount,
-                    Portions = p.Portions,
-                    BalloonQuantity = p.BalloonQuantity,
-                    LocationName = p.LocationName
-                })
-                .ToListAsync();
-        }
-
         public async Task<BirthdayPartyViewModel?> GetByIdAsync(int id)
         {
             return await context.BirthdayParties
@@ -40,6 +21,9 @@ namespace KidsBirthdayPlanner.Services
                 .Select(p => new BirthdayPartyViewModel
                 {
                     Id = p.Id,
+                    ThemeId = p.ThemeId,
+                    CakeId = p.CakeId,
+                    BalloonId = p.BalloonId,
                     ThemeName = p.Theme.Name,
                     CakeName = p.Cake.Type + " - " + p.Cake.Flavor,
                     BalloonName = p.Balloon.Type + " - " + p.Balloon.Color,
@@ -47,7 +31,8 @@ namespace KidsBirthdayPlanner.Services
                     GuestsCount = p.GuestsCount,
                     BalloonQuantity = p.BalloonQuantity,
                     Portions = p.Portions,
-                    LocationName = p.LocationName
+                    LocationName = p.LocationName,
+                    ImageUrl = p.ImageUrl
                 })
                 .FirstOrDefaultAsync();
         }
@@ -111,7 +96,8 @@ namespace KidsBirthdayPlanner.Services
                 Portions = model.Portions,
                 Date = model.Date,
                 GuestsCount = model.GuestsCount,
-                LocationName = model.LocationName
+                LocationName = model.LocationName,
+                ImageUrl = model.ImageUrl,
             };
 
             await context.BirthdayParties.AddAsync(party);
@@ -180,6 +166,7 @@ namespace KidsBirthdayPlanner.Services
             party.Date = model.Date;
             party.GuestsCount = model.GuestsCount;
             party.LocationName = model.LocationName;
+            party.ImageUrl = model.ImageUrl;
 
             await context.SaveChangesAsync();
         }
@@ -196,6 +183,58 @@ namespace KidsBirthdayPlanner.Services
 
             context.BirthdayParties.Remove(party);
             await context.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<BirthdayPartyViewModel>> GetLatestAsync(int count)
+        {
+            return await context.BirthdayParties
+                .OrderByDescending(p => p.Date)
+                .Take(count)
+                .Select(p => new BirthdayPartyViewModel
+                {
+                    Id = p.Id,
+                    ThemeName = p.Theme.Name,
+                    ImageUrl = string.IsNullOrEmpty(p.ImageUrl)
+                      ?"https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80"
+                      : p.ImageUrl,
+                    LocationName = p.LocationName
+                })
+                .ToListAsync();
+        }
+
+        public async Task<(IEnumerable<BirthdayPartyViewModel> Parties, int TotalPages)> GetAllAsync(string? searchTerm, int currentPage, int pageSize)
+        {
+            IQueryable<BirthdayParty> query = context.BirthdayParties;
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(p =>
+                    p.Theme.Name.Contains(searchTerm) ||
+                    p.LocationName.Contains(searchTerm));
+            }
+
+            int totalCount = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            var parties = await query
+                .OrderBy(p => p.Id)
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new BirthdayPartyViewModel
+                {
+                    Id = p.Id,
+                    ThemeName = p.Theme.Name,
+                    CakeName = p.Cake.Type + " - " + p.Cake.Flavor,
+                    BalloonName = p.Balloon.Type + " - " + p.Balloon.Color,
+                    Date = p.Date,
+                    GuestsCount = p.GuestsCount,
+                    Portions = p.Portions,
+                    BalloonQuantity = p.BalloonQuantity,
+                    LocationName = p.LocationName,
+                    ImageUrl = p.ImageUrl
+                })
+                .ToListAsync();
+
+            return (parties, totalPages);
         }
     }
 }

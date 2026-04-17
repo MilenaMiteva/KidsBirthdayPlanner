@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-5">Admin Dashboard</h1>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+                <h3>Manage Parties</h3>
+                <a asp-area=""
+                   asp-controller="BirthdayParty"
+                   asp-action="Index"
+                   class="btn btn-primary mt-3">
+                    Open
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+                <h3>Create Party</h3>
+                <a asp-area=""
+                   asp-controller="BirthdayParty"
+                   asp-action="Create"
+                   class="btn btn-success mt-3">
+                    Create
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+                <h3>Users / Roles</h3>
+                <p class="text-muted">Coming Soon</p>
+            </div>
+        </div>
+
+    </div>
+</div>

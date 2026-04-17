@@ -15,10 +15,21 @@ namespace KidsBirthdayPlanner.Controllers
             this.service = service;
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm, int page = 1)
         {
-            var parties = await service.GetAllAsync();
-            return View(parties);
+            int pageSize = 3;
+
+            var result = await service.GetAllAsync(searchTerm, page, pageSize);
+
+            var model = new BirthdayPartyListViewModel
+            {
+                Parties = result.Parties,
+                SearchTerm = searchTerm,
+                CurrentPage = page,
+                TotalPages = result.TotalPages
+            };
+
+            return View(model);
         }
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
@@ -34,7 +45,8 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize(Roles = "Administrator")] // Only Admins can create birthday parties
+
         public async Task<IActionResult> Create()
         {
             var model = await service.GetCreateModelAsync();
@@ -42,7 +54,9 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpPost]
-        
+        [Authorize(Roles = "Administrator")] // Only Admins can create birthday parties
+
+
         public async Task<IActionResult> Create(BirthdayPartyViewModel model)
         {
             if (!ModelState.IsValid)
@@ -57,7 +71,9 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize(Roles = "Administrator")] // Only Admins can edit birthday parties
+
+
         public async Task<IActionResult> Edit(int id)
         {
             var model = await service.GetEditAsync(id);
@@ -71,7 +87,9 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpPost]
-        
+        [Authorize(Roles = "Administrator")] // Only Admins can edit birthday parties
+
+
         public async Task<IActionResult> Edit(BirthdayPartyViewModel model)
         {
             if (!ModelState.IsValid)
@@ -85,7 +103,9 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize(Roles = "Administrator")] // Only Admins can delete birthday parties
+
+
         public async Task<IActionResult> Delete(int id)
         {
             var model = await service.GetDeleteAsync(id);
@@ -99,7 +119,8 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpPost]
-        
+        [Authorize(Roles = "Administrator")] // Only Admins can delete birthday parties
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await service.DeleteAsync(id);

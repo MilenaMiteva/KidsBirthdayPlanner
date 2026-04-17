@@ -1,8 +1,73 @@
-﻿@{
+﻿@using KidsBirthdayPlanner.ViewModels
+@model IEnumerable<BirthdayPartyViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    
+<div class="container text-center mt-5">
+
+    <h1 class="display-3 fw-bold text-light">
+        Plan Magical Birthday Parties
+    </h1>
+
+    <p class="lead text-light mt-3">
+        Create unforgettable moments for your kids with ease.
+        Choose themes, cakes, decorations and manage everything in one place.
+    </p>
+
+    <div class="mt-4">
+
+        <a asp-controller="BirthdayParty"
+           asp-action="Index"
+           class="btn btn-outline-light btn-lg me-3">
+            Explore Parties
+        </a>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="BirthdayParty"
+               asp-action="Create"
+               class="btn btn-success btn-lg">
+                Create Party
+            </a>
+        }
+
+    </div>
+
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center text-light mb-4">Latest Birthday Parties</h2>
+
+    <div class="row">
+        @foreach (var party in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card neon-card h-100">
+
+                    @if (!string.IsNullOrWhiteSpace(party.ImageUrl))
+                    {
+                        <img src="@party.ImageUrl"
+                             class="card-img-top"
+                             alt="@party.ThemeName"
+                             style="height: 220px; object-fit: cover;" />
+                    }
+
+                    <div class="card-body text-center">
+                        <h4>@party.ThemeName</h4>
+                        <p>@party.LocationName</p>
+
+                        <a asp-controller="BirthdayParty"
+                           asp-action="Details"
+                           asp-route-id="@party.Id"
+                           class="btn btn-primary mt-2">
+                            Details
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
 </div>

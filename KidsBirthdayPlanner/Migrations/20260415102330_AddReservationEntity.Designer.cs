@@ -4,6 +4,7 @@ using KidsBirthdayPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KidsBirthdayPlanner.Migrations
 {
     [DbContext(typeof(KidsBirthdayPlannerContext))]
-    partial class KidsBirthdayPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20260415102330_AddReservationEntity")]
+    partial class AddReservationEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,39 +271,6 @@ namespace KidsBirthdayPlanner.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("KidsBirthdayPlanner.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BirthdayPartyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BirthdayPartyId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -549,17 +519,6 @@ namespace KidsBirthdayPlanner.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("KidsBirthdayPlanner.Models.Review", b =>
-                {
-                    b.HasOne("KidsBirthdayPlanner.Data.BirthdayParty", "BirthdayParty")
-                        .WithMany("Reviews")
-                        .HasForeignKey("BirthdayPartyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BirthdayParty");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -614,8 +573,6 @@ namespace KidsBirthdayPlanner.Migrations
             modelBuilder.Entity("KidsBirthdayPlanner.Data.BirthdayParty", b =>
                 {
                     b.Navigation("Reservations");
-
-                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

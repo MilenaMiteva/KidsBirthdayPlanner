@@ -20,6 +20,8 @@ public class BirthdayPartyViewModel
     public string? CakeName { get; set; }
     public string? BalloonName { get; set; }
 
+    public string? SearchTerm { get; set; }
+
     [Required]
     public int Portions { get; set; }
 
@@ -28,6 +30,9 @@ public class BirthdayPartyViewModel
 
     [Range(BalloonQuantityMin, BalloonQuantityMax)]
     public int BalloonQuantity { get; set; }
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+    public int PageSize { get; set; } = 3;
 
     public string? LocationName { get; set; }
 

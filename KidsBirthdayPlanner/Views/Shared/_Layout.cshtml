@@ -55,12 +55,26 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link"
-                                   asp-controller="BirthdayParty"
-                                   asp-action="Index">
+                                asp-controller="BirthdayParty"
+                                asp-action="Index">
                                     Birthday Parties
                                 </a>
                             </li>
-                        }
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                    asp-area="Admin"
+                                    asp-controller="Admin"
+                                    asp-action="Index">
+                                        Admin
+                                    </a>
+                                </li>
+
+                            }
+                        }  
+
+
 
                     </ul>
 

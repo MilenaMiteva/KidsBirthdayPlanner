@@ -1,25 +1,41 @@
 ﻿@using KidsBirthdayPlanner.ViewModels
+@using KidsBirthdayPlanner.ViewModels
 @model BirthdayPartyViewModel
 
 @{
     ViewData["Title"] = "BirthdayParty Details";
 }
 
-<h2>@ViewData["Title"]</h2>
+@if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+{
+    <div class="text-center mb-4">
+        <img src="@Model.ImageUrl"
+             alt="@Model.ThemeName"
+             style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 15px;" />
+    </div>
+}
 
-<p><strong>Id:</strong> @Model.Id</p>
-<p><strong>Theme:</strong> @Model.ThemeName</p>
- <p><strong>Cake:</strong> @Model.CakeName</p>
-<p><strong>Balloons:</strong> @Model.BalloonName</p>
-<p><strong>Guests:</strong> @Model.GuestsCount</p>
-<p>
-    <strong>Date:</strong> @Model.Date.ToString("dd.MM.yyyy HH:mm")
-</p>
-<p><strong>Location:</strong> @Model.LocationName</p>
+<div class="container mt-4">
+    <div class="card p-4 shadow-lg rounded-4">
 
+        <h2>@ViewData["Title"]</h2>
 
+        <p><strong>Id:</strong> @Model.Id</p>
+        <p><strong>Theme:</strong> @Model.ThemeName</p>
+        <p><strong>Cake:</strong> @Model.CakeName</p>
+        <p><strong>Balloons:</strong> @Model.BalloonName</p>
+        <p><strong>Guests:</strong> @Model.GuestsCount</p>
+        <p><strong>Date:</strong> @Model.Date.ToString("dd.MM.yyyy HH:mm")</p>
+        <p><strong>Location:</strong> @Model.LocationName</p>
 
-<a asp-controller="BirthdayParty" asp-action="Index">Back to all</a>
+        <a asp-controller="BirthdayParty"
+           asp-action="Index"
+           class="btn btn-secondary mt-3">
+            Back to all
+        </a>
+
+    </div>
+</div>
 
 
 

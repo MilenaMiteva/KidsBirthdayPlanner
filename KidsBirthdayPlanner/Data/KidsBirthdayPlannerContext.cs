@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using KidsBirthdayPlanner.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ public class KidsBirthdayPlannerContext : IdentityDbContext<IdentityUser>
     public virtual DbSet<Cake> Cakes { get; set; }
     public virtual DbSet<Balloon> Balloons { get; set; }
     public virtual DbSet<Theme> Themes { get; set; } = null!;
+    public virtual DbSet<Review> Reviews { get; set; }
+    public virtual DbSet<Reservation> Reservations { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,7 +51,8 @@ public class KidsBirthdayPlannerContext : IdentityDbContext<IdentityUser>
 
     }
 
-
+    
 
 }
+
 
