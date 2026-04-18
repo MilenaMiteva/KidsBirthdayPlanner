@@ -348,5 +348,35 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Equal("Happy Land Varna", party.LocationName);
             Assert.Equal(10, party.GuestsCount);
         }
+        [Fact]
+        public async Task DeleteAsync_ShouldRemoveParty()
+        {
+            var context = GetDbContext();
+
+            context.Themes.Add(new Theme { Id = 1, Name = "Barbie Dream Party" });
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            context.BirthdayParties.Add(new BirthdayParty
+            {
+                Id = 1,
+                ThemeId = 1,
+                CakeId = 1,
+                BalloonId = 1,
+                Date = DateTime.Now,
+                GuestsCount = 10,
+                Portions = 12,
+                BalloonQuantity = 5,
+                LocationName = "Happy Land Varna"
+            });
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            await service.DeleteAsync(1);
+
+            Assert.Empty(context.BirthdayParties);
+        }
     }
 }
