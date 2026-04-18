@@ -270,5 +270,37 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Single(result.Parties);
             Assert.Equal("Happy Land Varna", result.Parties.First().LocationName);
         }
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnCorrectParty()
+        {
+            var context = GetDbContext();
+
+            context.Themes.Add(new Theme { Id = 1, Name = "Barbie Dream Party" });
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            context.BirthdayParties.Add(new BirthdayParty
+            {
+                Id = 1,
+                ThemeId = 1,
+                CakeId = 1,
+                BalloonId = 1,
+                Date = DateTime.Now,
+                GuestsCount = 10,
+                Portions = 12,
+                BalloonQuantity = 5,
+                LocationName = "Happy Land Varna"
+            });
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var result = await service.GetByIdAsync(1);
+
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Id);
+            Assert.Equal("Barbie Dream Party", result.ThemeName);
+        }
     }
 }
