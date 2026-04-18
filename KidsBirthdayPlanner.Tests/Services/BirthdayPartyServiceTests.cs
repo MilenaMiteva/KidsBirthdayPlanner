@@ -181,5 +181,45 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Equal(3, result.Parties.Count());
             Assert.Equal(2, result.TotalPages);
         }
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnCorrectCount_ForSecondPage()
+        {
+            var context = GetDbContext();
+
+            context.Themes.AddRange(
+                new Theme { Id = 1, Name = "Barbie Dream Party" },
+                new Theme { Id = 2, Name = "Football Party" },
+                new Theme { Id = 3, Name = "Paw Patrol" },
+                new Theme { Id = 4, Name = "Frozen Princess" }
+            );
+
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            for (int i = 1; i <= 4; i++)
+            {
+                context.BirthdayParties.Add(new BirthdayParty
+                {
+                    Id = i,
+                    ThemeId = i,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 10,
+                    Portions = 12,
+                    BalloonQuantity = 5,
+                    LocationName = "Varna"
+                });
+            }
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var result = await service.GetAllAsync(null, 2, 3);
+
+            Assert.Single(result.Parties);
+            Assert.Equal(2, result.TotalPages);
+        }
     }
 }
