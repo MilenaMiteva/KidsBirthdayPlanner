@@ -378,5 +378,56 @@ namespace KidsBirthdayPlanner.Tests.Services
 
             Assert.Empty(context.BirthdayParties);
         }
+        [Fact]
+        public async Task EditAsync_ShouldUpdateParty()
+        {
+            var context = GetDbContext();
+
+            context.Themes.AddRange(
+                new Theme { Id = 1, Name = "Barbie Dream Party" },
+                new Theme { Id = 2, Name = "Football Party" }
+            );
+
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            context.BirthdayParties.Add(new BirthdayParty
+            {
+                Id = 1,
+                ThemeId = 1,
+                CakeId = 1,
+                BalloonId = 1,
+                Date = DateTime.Now,
+                GuestsCount = 10,
+                Portions = 12,
+                BalloonQuantity = 5,
+                LocationName = "Happy Land Varna"
+            });
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var model = new BirthdayPartyViewModel
+            {
+                Id = 1,
+                ThemeId = 2,
+                CakeId = 1,
+                BalloonId = 1,
+                Date = DateTime.Now,
+                GuestsCount = 25,
+                Portions = 30,
+                BalloonQuantity = 10,
+                LocationName = "Updated Location"
+            };
+
+            await service.EditAsync(model);
+
+            var party = context.BirthdayParties.First();
+
+            Assert.Equal(2, party.ThemeId);
+            Assert.Equal(25, party.GuestsCount);
+            Assert.Equal("Updated Location", party.LocationName);
+        }
     }
 }
