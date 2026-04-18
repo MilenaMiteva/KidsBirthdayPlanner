@@ -106,5 +106,80 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Single(result.Parties);
             Assert.Equal("Barbie Dream Party", result.Parties.First().ThemeName);
         }
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnCorrectCount_ForFirstPage()
+        {
+            var context = GetDbContext();
+
+            context.Themes.AddRange(
+                new Theme { Id = 1, Name = "Barbie Dream Party" },
+                new Theme { Id = 2, Name = "Football Party" },
+                new Theme { Id = 3, Name = "Paw Patrol" },
+                new Theme { Id = 4, Name = "Frozen Princess" }
+            );
+
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            context.BirthdayParties.AddRange(
+                new BirthdayParty
+                {
+                    Id = 1,
+                    ThemeId = 1,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 10,
+                    Portions = 12,
+                    BalloonQuantity = 5,
+                    LocationName = "Happy Land Varna"
+                },
+                new BirthdayParty
+                {
+                    Id = 2,
+                    ThemeId = 2,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 12,
+                    Portions = 14,
+                    BalloonQuantity = 6,
+                    LocationName = "Magic Kids Hall"
+                },
+                new BirthdayParty
+                {
+                    Id = 3,
+                    ThemeId = 3,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 15,
+                    Portions = 18,
+                    BalloonQuantity = 7,
+                    LocationName = "Kids Club Galaxy"
+                },
+                new BirthdayParty
+                {
+                    Id = 4,
+                    ThemeId = 4,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 20,
+                    Portions = 22,
+                    BalloonQuantity = 8,
+                    LocationName = "Fun City Mall"
+                }
+            );
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var result = await service.GetAllAsync(null, 1, 3);
+
+            Assert.Equal(3, result.Parties.Count());
+            Assert.Equal(2, result.TotalPages);
+        }
     }
 }
