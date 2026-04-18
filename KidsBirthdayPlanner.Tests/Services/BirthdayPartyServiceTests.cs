@@ -1,11 +1,12 @@
 ﻿using System;
-using KidsBirthdayPlanner.Data;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
-using KidsBirthdayPlanner.Models;
-using KidsBirthdayPlanner.Services;
 using System.Linq;
 using System.Threading.Tasks;
+using KidsBirthdayPlanner.Data;
+using KidsBirthdayPlanner.Models;
+using KidsBirthdayPlanner.Services;
+using KidsBirthdayPlanner.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace KidsBirthdayPlanner.Tests.Services
 {
@@ -312,6 +313,40 @@ namespace KidsBirthdayPlanner.Tests.Services
             var result = await service.GetByIdAsync(999);
 
             Assert.Null(result);
+        }
+        [Fact]
+        public async Task CreateAsync_ShouldAddNewParty()
+        {
+            var context = GetDbContext();
+
+            context.Themes.Add(new Theme { Id = 1, Name = "Barbie Dream Party" });
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var model = new BirthdayPartyViewModel
+            {
+                ThemeId = 1,
+                CakeId = 1,
+                BalloonId = 1,
+                BalloonQuantity = 5,
+                Portions = 12,
+                Date = DateTime.Now,
+                GuestsCount = 10,
+                LocationName = "Happy Land Varna",
+                ImageUrl = "/images/barbie.jpg"
+            };
+
+            await service.CreateAsync(model);
+
+            Assert.Equal(1, context.BirthdayParties.Count());
+
+            var party = context.BirthdayParties.First();
+            Assert.Equal("Happy Land Varna", party.LocationName);
+            Assert.Equal(10, party.GuestsCount);
         }
     }
 }
