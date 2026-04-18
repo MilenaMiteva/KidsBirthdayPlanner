@@ -221,5 +221,54 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Single(result.Parties);
             Assert.Equal(2, result.TotalPages);
         }
+        [Fact]
+        public async Task GetAllAsync_ShouldFilterParties_ByLocation()
+        {
+            var context = GetDbContext();
+
+            context.Themes.AddRange(
+                new Theme { Id = 1, Name = "Barbie Dream Party" },
+                new Theme { Id = 2, Name = "Football Party" }
+            );
+
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            context.BirthdayParties.AddRange(
+                new BirthdayParty
+                {
+                    Id = 1,
+                    ThemeId = 1,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 10,
+                    Portions = 12,
+                    BalloonQuantity = 5,
+                    LocationName = "Happy Land Varna"
+                },
+                new BirthdayParty
+                {
+                    Id = 2,
+                    ThemeId = 2,
+                    CakeId = 1,
+                    BalloonId = 1,
+                    Date = DateTime.Now,
+                    GuestsCount = 15,
+                    Portions = 16,
+                    BalloonQuantity = 7,
+                    LocationName = "Magic Kids Hall"
+                }
+            );
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var result = await service.GetAllAsync("Varna", 1, 10);
+
+            Assert.Single(result.Parties);
+            Assert.Equal("Happy Land Varna", result.Parties.First().LocationName);
+        }
     }
 }
