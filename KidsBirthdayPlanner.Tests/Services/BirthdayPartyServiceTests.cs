@@ -302,5 +302,16 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Equal(1, result.Id);
             Assert.Equal("Barbie Dream Party", result.ThemeName);
         }
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnNull_WhenPartyDoesNotExist()
+        {
+            var context = GetDbContext();
+
+            var service = new BirthdayPartyService(context);
+
+            var result = await service.GetByIdAsync(999);
+
+            Assert.Null(result);
+        }
     }
 }
