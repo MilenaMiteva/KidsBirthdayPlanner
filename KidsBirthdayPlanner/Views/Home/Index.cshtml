@@ -43,31 +43,7 @@
     <div class="row">
         @foreach (var party in Model)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card neon-card h-100">
-
-                    @if (!string.IsNullOrWhiteSpace(party.ImageUrl))
-                    {
-                        <img src="@party.ImageUrl"
-                             class="card-img-top"
-                             alt="@party.ThemeName"
-                             style="height: 220px; object-fit: cover;" />
-                    }
-
-                    <div class="card-body text-center">
-                        <h4>@party.ThemeName</h4>
-                        <p>@party.LocationName</p>
-
-                        <a asp-controller="BirthdayParty"
-                           asp-action="Details"
-                           asp-route-id="@party.Id"
-                           class="btn btn-primary mt-2">
-                            Details
-                        </a>
-                    </div>
-
-                </div>
-            </div>
+            <partial name="_BirthdayPartyCardPartial" model="party" />
         }
     </div>
 </div>
