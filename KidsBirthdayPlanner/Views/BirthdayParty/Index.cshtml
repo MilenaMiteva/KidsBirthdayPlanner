@@ -42,45 +42,7 @@ else
     <div class="row">
         @foreach (var party in Model.Parties)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card neon-card">
-
-                    @if (!string.IsNullOrWhiteSpace(party.ImageUrl))
-                    {
-                        <img src="@party.ImageUrl"
-                             class="card-img-top"
-                             alt="@party.ThemeName"
-                             style="height: 220px; object-fit: cover;" />
-                    }
-
-                    <div class="card-body text-center">
-                        <h4>@party.ThemeName</h4>
-                        <p>@party.LocationName</p>
-
-                        <a asp-action="Details"
-                           asp-route-id="@party.Id"
-                           class="btn btn-primary mt-2">
-                            Details
-                        </a>
-
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <a asp-action="Edit"
-                               asp-route-id="@party.Id"
-                               class="btn btn-warning ">
-                                Edit
-                            </a>
-
-                            <a asp-action="Delete"
-                               asp-route-id="@party.Id"
-                               class="btn btn-danger ">
-                                Delete
-                            </a>
-                        }
-                    </div>
-
-                </div>
-            </div>
+            <partial name="_BirthdayPartyCardPartial" model="party" />
         }
     </div>
 }
