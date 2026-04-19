@@ -2,9 +2,10 @@
 
 <h2>Delete Birthday Party</h2>
 
-<h4>Are you sure you want to delete @Model.ThemeId ?</h4>
+<h4>Are you sure you want to delete "@Model.ThemeName" ?</h4>
 
 <form asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
 
     <input type="hidden" asp-for="Id" />
 
