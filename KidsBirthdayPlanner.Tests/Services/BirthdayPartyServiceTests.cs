@@ -429,5 +429,37 @@ namespace KidsBirthdayPlanner.Tests.Services
             Assert.Equal(25, party.GuestsCount);
             Assert.Equal("Updated Location", party.LocationName);
         }
+        [Fact]
+        public async Task CreateAsync_ShouldSaveImageUrl()
+        {
+            var context = GetDbContext();
+
+            context.Themes.Add(new Theme { Id = 1, Name = "Barbie Dream Party" });
+            context.Cakes.Add(new Cake { Id = 1, Type = "Chocolate Cake", Flavor = "Chocolate" });
+            context.Balloons.Add(new Balloon { Id = 1, Type = "Foil", Color = "Gold" });
+
+            await context.SaveChangesAsync();
+
+            var service = new BirthdayPartyService(context);
+
+            var model = new BirthdayPartyViewModel
+            {
+                ThemeId = 1,
+                CakeId = 1,
+                BalloonId = 1,
+                BalloonQuantity = 5,
+                Portions = 12,
+                Date = DateTime.Now,
+                GuestsCount = 10,
+                LocationName = "Happy Land Varna",
+                ImageUrl = "/images/parties/barbie.jpg"
+            };
+
+            await service.CreateAsync(model);
+
+            var party = context.BirthdayParties.First();
+
+            Assert.Equal("/images/parties/barbie.jpg", party.ImageUrl);
+        }
     }
 }
