@@ -6,7 +6,7 @@ namespace KidsBirthdayPlanner.ViewModels
     {
         public int BirthdayPartyId { get; set; }
 
-        public string PartyName { get; set; } = null!;
+        public string? PartyName { get; set; } 
 
         [Required]
         [Range(1, 50)]
