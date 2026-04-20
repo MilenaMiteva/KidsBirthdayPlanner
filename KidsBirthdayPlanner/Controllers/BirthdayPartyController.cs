@@ -45,7 +45,7 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")] // Only Admins can create birthday parties
+        [Authorize(Roles = "Administrator")] 
 
         public async Task<IActionResult> Create()
         {
@@ -69,7 +69,7 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")] // Only Admins can edit birthday parties
+        [Authorize(Roles = "Administrator")] 
 
 
         public async Task<IActionResult> Edit(int id)
@@ -99,7 +99,7 @@ namespace KidsBirthdayPlanner.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")] // Only Admins can delete birthday parties
+        [Authorize(Roles = "Administrator")] 
 
 
         public async Task<IActionResult> Delete(int id)
