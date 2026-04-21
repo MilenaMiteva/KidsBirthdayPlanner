@@ -34,6 +34,7 @@ namespace KidsBirthdayPlanner
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddScoped<IBirthdayPartyService, BirthdayPartyService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
 
 
 
@@ -65,13 +66,15 @@ namespace KidsBirthdayPlanner
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var dbContext = services.GetRequiredService<KidsBirthdayPlannerContext>();
-
-                await dbContext.Database.MigrateAsync();
+                var dbContext = 
+                    services.GetRequiredService<KidsBirthdayPlannerContext>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+                await dbContext.Database.MigrateAsync();
                 await RoleSeeder.SeedRolesAsync(roleManager);
                 await AdminSeeder.SeedAdminAsync(userManager);
+
             }
 
             app.Run();
