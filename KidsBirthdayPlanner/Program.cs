@@ -64,9 +64,12 @@ namespace KidsBirthdayPlanner
 
             using (var scope = app.Services.CreateScope())
             {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var services = scope.ServiceProvider;
+                var dbContext = services.GetRequiredService<KidsBirthdayPlannerContext>();
 
+                await dbContext.Database.MigrateAsync();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                 await RoleSeeder.SeedRolesAsync(roleManager);
                 await AdminSeeder.SeedAdminAsync(userManager);
             }
